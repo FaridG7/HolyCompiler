@@ -1,4 +1,4 @@
-import { grammer } from "../objects/grammer_types"
+import { grammer } from "./types/grammer_types"
 
 export const Grammer:grammer = [
 {variable:"<prog>",rightSide:["program","<id>",";","var","<dec-list>","begin","<stat-list>","end"]},
