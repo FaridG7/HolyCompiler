@@ -1,4 +1,4 @@
-type variable =
+export type variable =
   | "<prog>"
   | "<id>"
   | "<dec-list>"
@@ -37,17 +37,16 @@ type keyWordsTerminal =
   | "integer"
   | "show";
 
-type sybolTerminal = ";" | ":" | "," | "(" | ")" | "{" | "}";
+type symbolTerminal = ";" | ":" | "," | "(" | ")";
 
 type operatorTerminal = "=" | "+" | "-" | "*" | "/";
 
-type terminal =
+export type terminal =
   | keyWordsTerminal
   | letterTerminal
   | numberTerminal
-  | sybolTerminal
-  | operatorTerminal
-  | "$";
+  | symbolTerminal
+  | operatorTerminal;
 
 export type terminalObject = {
   value: terminal;
@@ -59,11 +58,11 @@ export type variableObject = {
   type: "variable";
 };
 
-type rule = {
+export type rule = {
   variable: variableObject;
-  rightSide:
-    | Array<terminalObject | variableObject>
-    | { value: "lambda"; type: "terminal" };
+  rightSide: Array<
+    terminalObject | variableObject | { value: "lambda"; type: "terminal" }
+  >;
 };
 
 export type grammer = rule[];

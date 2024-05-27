@@ -1,14 +1,14 @@
 type block = null | number | "lambda";
 
-type row = {
+export type row = {
   program: block;
   var: block;
   begin: block;
   end: block;
-  ":": block;
-  ",": block;
   integer: block;
   show: block;
+  ",": block;
+  ":": block;
   "=": block;
   "+": block;
   "-": block;
