@@ -1,8 +1,8 @@
 import { grammer } from "./types/grammer_types";
 
-export const tempGrammer: grammer = [
+export const Grammer: grammer = [
   {
-    variable: "<prog>",
+    variable: { value: "<prog>", type: "variable" },
     rightSide: [
       { value: "program", type: "terminal" },
       { value: "<id>", type: "variable" },
@@ -15,29 +15,32 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<id>",
+    variable: { value: "<id>", type: "variable" },
     rightSide: [
       { value: "<letter>", type: "variable" },
       { value: "<alphaNum>", type: "variable" },
     ],
   },
   {
-    variable: "<alphaNum>",
+    variable: { value: "<alphaNum>", type: "variable" },
     rightSide: [
       { value: "<letter>", type: "variable" },
       { value: "<alphaNum>", type: "variable" },
     ],
   },
   {
-    variable: "<alphaNum>",
+    variable: { value: "<alphaNum>", type: "variable" },
     rightSide: [
       { value: "<digit>", type: "variable" },
       { value: "<alphaNum>", type: "variable" },
     ],
   },
-  { variable: "<alphaNum>", rightSide: { value: "lambda", type: "terminal" } },
   {
-    variable: "<dec-list>",
+    variable: { value: "<alphaNum>", type: "variable" },
+    rightSide: { value: "lambda", type: "terminal" },
+  },
+  {
+    variable: { value: "<dec-list>", type: "variable" },
     rightSide: [
       { value: "<dec>", type: "variable" },
       { value: ":", type: "terminal" },
@@ -46,31 +49,49 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<dec>",
+    variable: { value: "<dec>", type: "variable" },
     rightSide: [
       { value: "<id>", type: "variable" },
       { value: "<moreDec>", type: "variable" },
     ],
   },
-  { variable: "<moreDec>", rightSide: [{ value: "<dec>", type: "variable" }] },
-  { variable: "<moreDec>", rightSide: { value: "lambda", type: "terminal" } },
-  { variable: "<type>", rightSide: [{ value: "integer", type: "terminal" }] },
   {
-    variable: "<stat-list>",
+    variable: { value: "<moreDec>", type: "variable" },
+    rightSide: [{ value: "<dec>", type: "variable" }],
+  },
+  {
+    variable: { value: "<moreDec>", type: "variable" },
+    rightSide: { value: "lambda", type: "terminal" },
+  },
+  {
+    variable: { value: "<type>", type: "variable" },
+    rightSide: [{ value: "integer", type: "terminal" }],
+  },
+  {
+    variable: { value: "<stat-list>", type: "variable" },
     rightSide: [
       { value: "<stat>", type: "variable" },
       { value: "<moreStat>", type: "variable" },
     ],
   },
   {
-    variable: "<moreStat>",
+    variable: { value: "<moreStat>", type: "variable" },
     rightSide: [{ value: "<stat-list>", type: "variable" }],
   },
-  { variable: "<moreStat>", rightSide: { value: "lambda", type: "terminal" } },
-  { variable: "<stat>", rightSide: [{ value: "<write>", type: "variable" }] },
-  { variable: "<stat>", rightSide: [{ value: "<assign>", type: "variable" }] },
   {
-    variable: "<write>",
+    variable: { value: "<moreStat>", type: "variable" },
+    rightSide: { value: "lambda", type: "terminal" },
+  },
+  {
+    variable: { value: "<stat>", type: "variable" },
+    rightSide: [{ value: "<write>", type: "variable" }],
+  },
+  {
+    variable: { value: "<stat>", type: "variable" },
+    rightSide: [{ value: "<assign>", type: "variable" }],
+  },
+  {
+    variable: { value: "<write>", type: "variable" },
     rightSide: [
       { value: "show", type: "terminal" },
       { value: "(", type: "terminal" },
@@ -80,7 +101,7 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<assign>",
+    variable: { value: "<assign>", type: "variable" },
     rightSide: [
       { value: "<id>", type: "variable" },
       { value: "=", type: "terminal" },
@@ -89,14 +110,14 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<expr>",
+    variable: { value: "<expr>", type: "variable" },
     rightSide: [
       { value: "<term>", type: "variable" },
       { value: "<exprPrime>", type: "variable" },
     ],
   },
   {
-    variable: "<exprPrime>",
+    variable: { value: "<exprPrime>", type: "variable" },
     rightSide: [
       { value: "+", type: "terminal" },
       { value: "<term>", type: "variable" },
@@ -104,17 +125,23 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<exprPrime>",
+    variable: { value: "<exprPrime>", type: "variable" },
     rightSide: [
       { value: "-", type: "terminal" },
       { value: "<term>", type: "variable" },
       { value: "<exprPrime>", type: "variable" },
     ],
   },
-  { variable: "<exprPrime>", rightSide: { value: "lambda", type: "terminal" } },
-  { variable: "<term>", rightSide: [{ value: "<factor>", type: "variable" }] },
   {
-    variable: "<termPrime>",
+    variable: { value: "<exprPrime>", type: "variable" },
+    rightSide: { value: "lambda", type: "terminal" },
+  },
+  {
+    variable: { value: "<term>", type: "variable" },
+    rightSide: [{ value: "<factor>", type: "variable" }],
+  },
+  {
+    variable: { value: "<termPrime>", type: "variable" },
     rightSide: [
       { value: "*", type: "terminal" },
       { value: "<factor>", type: "variable" },
@@ -122,21 +149,27 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<termPrime>",
+    variable: { value: "<termPrime>", type: "variable" },
     rightSide: [
       { value: "/", type: "terminal" },
       { value: "<factor>", type: "variable" },
       { value: "<termPrime>", type: "variable" },
     ],
   },
-  { variable: "<termPrime>", rightSide: { value: "lambda", type: "terminal" } },
-  { variable: "<factor>", rightSide: [{ value: "<id>", type: "variable" }] },
   {
-    variable: "<factor>",
+    variable: { value: "<termPrime>", type: "variable" },
+    rightSide: { value: "lambda", type: "terminal" },
+  },
+  {
+    variable: { value: "<factor>", type: "variable" },
+    rightSide: [{ value: "<id>", type: "variable" }],
+  },
+  {
+    variable: { value: "<factor>", type: "variable" },
     rightSide: [{ value: "<number>", type: "variable" }],
   },
   {
-    variable: "<factor>",
+    variable: { value: "<factor>", type: "variable" },
     rightSide: [
       { value: "(", type: "terminal" },
       { value: "<expr>", type: "variable" },
@@ -144,14 +177,14 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<number>",
+    variable: { value: "<number>", type: "variable" },
     rightSide: [
       { value: "<digit>", type: "variable" },
       { value: "<moreDigits>", type: "variable" },
     ],
   },
   {
-    variable: "<number>",
+    variable: { value: "<number>", type: "variable" },
     rightSide: [
       { value: "<sign>", type: "variable" },
       { value: "<digit>", type: "variable" },
@@ -159,32 +192,86 @@ export const tempGrammer: grammer = [
     ],
   },
   {
-    variable: "<moreDigits>",
+    variable: { value: "<moreDigits>", type: "variable" },
     rightSide: [
       { value: "<digit>", type: "variable" },
       { value: "<moreDigits>", type: "variable" },
     ],
   },
   {
-    variable: "<moreDigits>",
+    variable: { value: "<moreDigits>", type: "variable" },
     rightSide: { value: "lambda", type: "terminal" },
   },
-  { variable: "<sign>", rightSide: [{ value: "+", type: "terminal" }] },
-  { variable: "<sign>", rightSide: [{ value: "-", type: "terminal" }] },
-  { variable: "<sign>", rightSide: { value: "lambda", type: "terminal" } },
-  { variable: "<digit>", rightSide: [{ value: "0", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "1", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "2", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "3", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "4", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "5", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "6", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "7", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "8", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "9", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "a", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "b", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "c", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "d", type: "terminal" }] },
-  { variable: "<digit>", rightSide: [{ value: "e", type: "terminal" }] },
+  {
+    variable: { value: "<sign>", type: "variable" },
+    rightSide: [{ value: "+", type: "terminal" }],
+  },
+  {
+    variable: { value: "<sign>", type: "variable" },
+    rightSide: [{ value: "-", type: "terminal" }],
+  },
+  {
+    variable: { value: "<sign>", type: "variable" },
+    rightSide: { value: "lambda", type: "terminal" },
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "0", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "1", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "2", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "3", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "4", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "5", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "6", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "7", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "8", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "9", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "a", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "b", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "c", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "d", type: "terminal" }],
+  },
+  {
+    variable: { value: "<digit>", type: "variable" },
+    rightSide: [{ value: "e", type: "terminal" }],
+  },
 ];

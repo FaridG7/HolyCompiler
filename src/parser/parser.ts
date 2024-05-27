@@ -1,24 +1,26 @@
 import { Grammer } from "../assets/grammer";
-import { stack } from "../assets/stack";
-import { terminal, variable } from "../assets/types/grammer_types";
+import { element, stack } from "../assets/stack";
 import { token, tokenTable } from "../assets/types/tokenTable_types";
 import { parseTable } from "../assets/parseTable";
 
-export function parser(tokenTable:tokenTable){
-    const holderStack = new stack();
-    holderStack.push("$");
-    holderStack.push(Grammer[0].variable);
-    let index = 0;
-    while (true) {
-        let token:token = tokenTable[index].idName;
-        let topOfStack:terminal|variable = holderStack.pop();
-        if(topOfStack.getClass() == terminal.class)
-        //1)look at the top of the stack
-        //2.a)if it's a terminal read from the token table
-        //2.b)if it's a variable, look at the pars table
-        //3)decide based on the parsing table
-
+export function parser(tokenTable: tokenTable) {
+  const holderStack = new stack();
+  holderStack.push({ value: "$", type: "terminal" });
+  holderStack.push(Grammer[0].variable);
+  let index: number = 0;
+  let token: token;
+  let topOfStack: element;
+  let action: number | "lambda" | null;
+  while (true) {
+    token = tokenTable[index];
+    topOfStack = holderStack.pop();
+    if (topOfStack.type === "terminal") {
+      //compare the terminal with the token
+      index = index + 1;
+    } else {
+      //decide based on the parse table
+      action = parseTable[topOfStack.value][token.idName as "show"]; //!!!!temporary
+      if (action === "lambda") holderStack.pop();
     }
+  }
 }
-
-function 

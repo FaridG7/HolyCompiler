@@ -1,8 +1,9 @@
-import { terminal, variable } from "./types/grammer_types";
+import { terminalObject, variableObject } from "./types/grammer_types";
 
+export type element = terminalObject|variableObject;
 
 export class stack{
-    private holder: Array<terminal|variable>;
+    private holder: Array<element>;
     private top:number;
 
     constructor(){
@@ -10,14 +11,14 @@ export class stack{
         this.top = 0;
     }
 
-    push(input:terminal|variable):void{
+    push(input:element):void{
         this.holder.push(input);
         this.top = this.top + 1;
     }
-    pop():terminal|variable{
+    pop():element{
         if(this.top > 0){
             this.top = this.top - 1;
-            return this.holder.pop() as terminal|variable;
+            return this.holder.pop() as element;
         }else{
             throw new Error("stack is empty!");
         }
