@@ -37,7 +37,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<alphaNum>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<dec-list>", type: "variable" },
@@ -61,7 +61,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<moreDec>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<type>", type: "variable" },
@@ -80,7 +80,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<moreStat>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<stat>", type: "variable" },
@@ -134,7 +134,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<exprPrime>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<term>", type: "variable" },
@@ -158,7 +158,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<termPrime>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<factor>", type: "variable" },
@@ -200,7 +200,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<moreDigits>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<sign>", type: "variable" },
@@ -212,7 +212,7 @@ export const Grammer: grammer = [
   },
   {
     variable: { value: "<sign>", type: "variable" },
-    rightSide: { value: "lambda", type: "terminal" },
+    rightSide: [{ value: "lambda", type: "terminal" }],
   },
   {
     variable: { value: "<digit>", type: "variable" },
