@@ -1,0 +1,162 @@
+import { token } from "../assets/types/tokenTable_types";
+
+export function scanner(wordText: string) {
+  const rows = wordText.split("\n");
+  const listOfListOfwords = rows.map((element) => element.split(" "));
+
+  return listOfListOfwords.map((listOfwords, rowNumber) =>
+    listOfwords.map((word, columnNumber) => {
+      if (isKeyword(word)) {
+        columnNumber += word.length;
+        const tokenInstance: token = {
+          idType: "keyWord",
+          value: word,
+          blockNumber: 0,
+          outerBlockNumber: -1,
+          columnNumber: columnNumber,
+          rowNumber: rowNumber,
+        };
+        return tokenInstance;
+      } else if (isLitteral(word)) {
+        columnNumber += word.length;
+        const tokenInstance: token = {
+          idType: "literal",
+          value: word,
+          blockNumber: 0,
+          outerBlockNumber: -1,
+          columnNumber: columnNumber,
+          rowNumber: rowNumber,
+        };
+        return tokenInstance;
+      } else if (isDelimeter(word)) {
+        columnNumber += word.length;
+        const tokenInstance: token = {
+          idType: "literal",
+          value: word,
+          blockNumber: 0,
+          outerBlockNumber: -1,
+          columnNumber: columnNumber,
+          rowNumber: rowNumber,
+        };
+        return tokenInstance;
+      } else if (isOperator(word)) {
+        columnNumber += word.length;
+        const tokenInstance: token = {
+          idType: "literal",
+          value: word,
+          blockNumber: 0,
+          outerBlockNumber: -1,
+          columnNumber: columnNumber,
+          rowNumber: rowNumber,
+        };
+        return tokenInstance;
+      } else if (isNumber(word)) {
+        columnNumber += word.length;
+        const tokenInstance: token = {
+          idType: "literal",
+          value: word,
+          blockNumber: 0,
+          outerBlockNumber: -1,
+          columnNumber: columnNumber,
+          rowNumber: rowNumber,
+        };
+        return tokenInstance;
+      } else if (isIdentifier(word)) {
+        columnNumber += word.length;
+        const tokenInstance: token = {
+          idType: "literal",
+          value: word,
+          blockNumber: 0,
+          outerBlockNumber: -1,
+          columnNumber: columnNumber,
+          rowNumber: rowNumber,
+        };
+        return tokenInstance;
+      } else {
+        throw Error;
+      }
+    })
+  );
+}
+
+function isKeyword(word: string): boolean {
+  const _listOfKeyWords = ["program", "end", "begin", "show", "var", "integer"];
+  if (_listOfKeyWords.includes(word)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function isOperator(word: string): boolean {
+  const _listOfOperators = ["+", "=", "-", "/", "*"];
+  if (_listOfOperators.includes(word)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function isIdentifier(word: string): boolean {
+  const _validFirstChars: string[] = ["a", "b", "c", "d", "e"];
+  const _validOtherChars: string[] = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+  ];
+  if (!_validFirstChars.includes(word[0])) {
+    return false;
+  }
+  const length: number = word.length;
+  for (let i = 1; i < length; i++) {
+    if (!_validOtherChars.includes(word[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+function isLitteral(word: string): boolean {
+  const _listOflitterals: string[] = ['"', ";", " "];
+  if (_listOflitterals.includes(word)) {
+    return true;
+  }
+  return false;
+}
+function isNumber(word: string): boolean {
+  const _listOfNumbers: string[] = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+  ];
+  const lenght: number = word.length;
+  for (let rowNumber = 0; rowNumber < lenght; rowNumber++) {
+    if (!_listOfNumbers.includes(word[rowNumber])) {
+      return false;
+    }
+  }
+  return true;
+}
+function isDelimeter(word: string): boolean {
+  const _listOflitterals: string[] = ["(", ")"];
+  if (_listOflitterals.includes(word)) {
+    return true;
+  }
+  return false;
+}

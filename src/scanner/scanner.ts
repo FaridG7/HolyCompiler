@@ -2,7 +2,7 @@ export function scanner(inputText: string) {
   //! token list
   const tokensList: ScanToken[] = [];
   const splitInputByRows: string[] = inputText.split("\n");
-  let currentbloc: number = 0;
+  let currentblock: number = 0;
   const rowsCount: number = splitInputByRows.length;
 
   for (let index = 0; index < rowsCount; index++) {
@@ -16,23 +16,23 @@ export function scanner(inputText: string) {
         //create token
         columnNumber += input.length;
         const instance: ScanToken = {
-          idType: "kayWord",
+          idType: "keyWord",
           value: input,
-          blockNumber: currentbloc,
-          outerBlockNumber: currentbloc - 1,
+          blockNumber: currentblock,
+          outerBlockNumber: currentblock - 1,
           columnNumber: columnNumber,
           rowNumber: index,
         };
         tokensList.push(instance);
       } else if (isLitteral(input)) {
         //todo : clearfy bloc strategy : EddyHezarian
-        currentbloc++;
+        currentblock++;
         columnNumber += input.length;
         const instance: ScanToken = {
           idType: "literal",
           value: input,
-          blockNumber: currentbloc,
-          outerBlockNumber: currentbloc - 1,
+          blockNumber: currentblock,
+          outerBlockNumber: currentblock - 1,
           columnNumber: columnNumber,
           rowNumber: index,
         };
@@ -42,8 +42,8 @@ export function scanner(inputText: string) {
         const instance: ScanToken = {
           idType: "literal",
           value: input,
-          blockNumber: currentbloc,
-          outerBlockNumber: currentbloc - 1,
+          blockNumber: currentblock,
+          outerBlockNumber: currentblock - 1,
           columnNumber: columnNumber,
           rowNumber: index,
         };
@@ -53,8 +53,8 @@ export function scanner(inputText: string) {
         const instance: ScanToken = {
           idType: "literal",
           value: input,
-          blockNumber: currentbloc,
-          outerBlockNumber: currentbloc - 1,
+          blockNumber: currentblock,
+          outerBlockNumber: currentblock - 1,
           columnNumber: columnNumber,
           rowNumber: index,
         };
@@ -64,8 +64,8 @@ export function scanner(inputText: string) {
         const instance: ScanToken = {
           idType: "literal",
           value: input,
-          blockNumber: currentbloc,
-          outerBlockNumber: currentbloc - 1,
+          blockNumber: currentblock,
+          outerBlockNumber: currentblock - 1,
           columnNumber: columnNumber,
           rowNumber: index,
         };
@@ -75,8 +75,8 @@ export function scanner(inputText: string) {
         const instance: ScanToken = {
           idType: "literal",
           value: input,
-          blockNumber: currentbloc,
-          outerBlockNumber: currentbloc - 1,
+          blockNumber: currentblock,
+          outerBlockNumber: currentblock - 1,
           columnNumber: columnNumber,
           rowNumber: index,
         };
@@ -87,6 +87,7 @@ export function scanner(inputText: string) {
     }
   }
 }
+
 type ScanToken = {
   rowNumber: number;
   columnNumber: number;
