@@ -12,6 +12,7 @@ export class parser {
     this.tokenTable = tokenTable;
     this.holderStack = new stack();
   }
+
   parse() {
     this.holderStack.push(Grammer[0].variable);
     let index: number = 0;
@@ -25,8 +26,11 @@ export class parser {
       currentToken = (this.tokenTable as tokenTable)[index];
       topOfStack = this.holderStack.pop();
       if (topOfStack.type === "terminal") {
-        //compare the terminal with the token
-        index = index + 1;
+        if (topOfStack.value === currentToken.value) index++;
+        else
+          throw Error(
+            `The row ${currentToken.rowNumber} column ${currentToken.columnNumber} terminal is not expected!!`
+          );
       } else {
         rowIndex = topOfStack.value;
         columnIndex = currentToken.value;
