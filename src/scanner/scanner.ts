@@ -62,7 +62,7 @@ export class scanner {
         } else if (this.isDelimiter(word)) {
           return this.makeTempToken("identifier", word);
         } else {
-          throw Error;
+          return this.makeTempToken("invalid", word);
         }
       })
     );

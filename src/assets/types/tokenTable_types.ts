@@ -1,12 +1,13 @@
 import { terminal } from "./grammer_types";
 
 export type tokenType =
-  | "keyWord" 
+  | "keyWord"
   | "number"
   | "operator"
   | "identifier"
-  | "literal" 
-  | "delimiters";
+  | "literal"
+  | "delimiters"
+  | "invalid";
 
 export type token = {
   rowNumber: number;
