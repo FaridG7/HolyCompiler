@@ -1,0 +1,175 @@
+import { terminal } from "../assets/types/grammer_types";
+import { tokenType, token } from "../assets/types/tokenTable_types";
+
+type tempToken = Omit<token, "value"> & { value: string };
+
+export function scanner(wordText: string) {
+  const rows = wordText.split("\n");
+  const listOfListOfwords = rows.map((element) => element.split(" "));
+
+  const arrayOfArraysOfTempTokens: Array<Array<tempToken>> =
+    listOfListOfwords.map((listOfwords, rowNumber) =>
+      listOfwords.map((word, columnNumber) => {
+        if (isKeyword(word)) {
+          return tempTokenMaker(rowNumber, columnNumber, "keyWord", word);
+        } else if (isLitteral(word)) {
+          return tempTokenMaker(
+            rowNumber,
+            columnNumber,
+            "literal",
+            word as terminal
+          );
+        } else if (isOperator(word)) {
+          return tempTokenMaker(
+            rowNumber,
+            columnNumber,
+            "operator",
+            word as terminal
+          );
+        } else if (isNumber(word)) {
+          return tempTokenMaker(
+            rowNumber,
+            columnNumber,
+            "number",
+            word as terminal
+          );
+        } else if (isIdentifier(word)) {
+          return tempTokenMaker(
+            rowNumber,
+            columnNumber,
+            "identifier",
+            word as terminal
+          );
+        } else {
+          throw Error;
+        }
+      })
+    );
+  const trueTokens = ["keyWord", "operator"];
+  const x = arrayOfArraysOfTempTokens.map((array) => {
+    let columnNumber = 0;
+    return array.map((tempToken) => {
+      if (trueTokens.includes(tempToken.type)) {
+        const newToken = { ...tempToken, columnNumber: columnNumber };
+        columnNumber++;
+        return newToken as token;
+      } else {
+        return Array.from(tempToken.value).map((char) => {
+          const newToken = {
+            rowNumber: tempToken.rowNumber,
+            columnNumber: columnNumber,
+            blockNumber: tempToken.blockNumber,
+            outerBlockNumber: tempToken.outerBlockNumber,
+            type: tempToken.type,
+            value: char,
+          };
+          columnNumber++;
+          return newToken as token;
+        });
+      }
+    });
+  });
+  const validArrayOfTokens = x.map((row) => flatArray(row));
+}
+
+function flatArray(arr: (token[] | token)[]): token[] {
+  return arr.reduce(
+    (ini: token[], cur) => ini.concat(Array.isArray(cur) ? cur : [cur]),
+    []
+  );
+}
+
+function tempTokenMaker(
+  rowNumber: number,
+  columnNumber: number,
+  type: tokenType,
+  value: string,
+  blockNumber: number = 0,
+  outerBlockNumber: number | undefined = undefined
+): tempToken {
+  const token: tempToken = {
+    rowNumber,
+    columnNumber,
+    blockNumber,
+    outerBlockNumber,
+    type,
+    value,
+  };
+  return token;
+}
+
+function isKeyword(word: string): boolean {
+  const _listOfKeyWords = ["program", "end", "begin", "show", "var", "integer"];
+  if (_listOfKeyWords.includes(word)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function isOperator(word: string): boolean {
+  const _listOfOperators = ["+", "=", "-", "/", "*"];
+  if (_listOfOperators.includes(word)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function isIdentifier(word: string): boolean {
+  const _validFirstword: string[] = ["a", "b", "c", "d", "e"];
+  const _validOtherword: string[] = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+  ];
+  if (!_validFirstword.includes(word[0])) {
+    return false;
+  }
+  Array.from(word)
+    .slice(1)
+    .forEach((char) => {
+      if (!_validOtherword.includes(char)) {
+        return false;
+      }
+    });
+  return true;
+}
+function isNumber(word: string): boolean {
+  const _listOfNumbers: string[] = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+  ];
+  Array.from(word).forEach((char) => {
+    if (!_listOfNumbers.includes(char)) {
+      return false;
+    }
+  });
+  return true;
+}
+
+function isLitteral(word: string): boolean {
+  const _listOflitterals: string[] = ['"', ";", " "]; //I don't understand
+  if (_listOflitterals.includes(word)) {
+    return true;
+  }
+  return false;
+}
