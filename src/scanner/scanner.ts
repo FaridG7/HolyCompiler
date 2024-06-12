@@ -8,12 +8,15 @@ type tempToken = Omit<token, "value" | "rowNumber" | "columnNumber"> & {
 
 export class scanner {
   private inputText: string;
-  private listOfListOfwords: string[][] = [];
-  private tempTokenTable: tempToken[][] = [];
-  private tokenTable: tokenTable = [];
+  private listOfListOfwords: string[][];
+  private tempTokenTable: tempToken[][];
+  private tokenTable: tokenTable;
 
   constructor(inputText: string) {
     this.inputText = inputText;
+    this.listOfListOfwords = [];
+    this.tempTokenTable = [];
+    this.tokenTable = [];
   }
 
   getTokenTable(): tokenTable {
