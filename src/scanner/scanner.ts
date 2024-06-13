@@ -20,8 +20,9 @@ export class scanner {
   }
 
   getTokenTable(): tokenTable {
-    if (this.tokenTable) return this.tokenTable;
-    else {
+    if (this.tokenTable.length) {
+      return this.tokenTable;
+    } else {
       this.makeTokenTable();
       return this.tokenTable;
     }
@@ -146,55 +147,30 @@ export class scanner {
       return false;
     }
   }
+
   private isIdentifier(word: string): boolean {
-    const _validFirstword: string[] = ["a", "b", "c", "d", "e"];
-    const _validOtherword: string[] = [
-      "a",
-      "b",
-      "c",
-      "d",
-      "e",
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "0",
-    ];
-    if (!_validFirstword.includes(word[0])) {
+    const firstCharRegex = /^[a-e]$/;
+
+    const otherCharRegex = /^[a-e0-9]$/;
+
+    if (!firstCharRegex.test(word[0])) {
       return false;
     }
-    Array.from(word)
-      .slice(1)
-      .forEach((char) => {
-        if (!_validOtherword.includes(char)) {
-          return false;
-        }
-      });
-    return true;
-  }
-  private isNumber(word: string): boolean {
-    const _listOfNumbers: string[] = [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "0",
-    ];
-    Array.from(word).forEach((char) => {
-      if (!_listOfNumbers.includes(char)) {
+
+    for (const char of word.slice(1)) {
+      if (!otherCharRegex.test(char)) {
         return false;
       }
-    });
+    }
+    return true;
+  }
+
+  private isNumber(word: string): boolean {
+    for (const char of word) {
+      if (!char.match(/\d/)) {
+        return false;
+      }
+    }
     return true;
   }
 

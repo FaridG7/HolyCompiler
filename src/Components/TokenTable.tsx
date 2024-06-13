@@ -25,7 +25,10 @@ export function TokenTable({ tokenTable }: { tokenTable: token[] }) {
         </TableHead>
         <TableBody>
           {tokenTable.map((token, index) => (
-            <TableRow key={index}>
+            <TableRow
+              key={index}
+              sx={{ bgcolor: token.type === "invalid" ? "#eb4034" : "#34eb67" }}
+            >
               <TableCell>{index + 1}</TableCell>
               <TableCell>{token.rowNumber}</TableCell>
               <TableCell>{token.columnNumber}</TableCell>

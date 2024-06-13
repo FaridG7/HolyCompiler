@@ -28,9 +28,13 @@ export class parser {
         currentToken = (this.tokenTable as tokenTable)[index];
       else
         throw new Error(
-          `expected a token at at row ${currentToken?.rowNumber}, column ${currentToken?.columnNumber}`
+          `expected a token at row ${currentToken?.rowNumber}, column ${currentToken?.columnNumber}`
         );
 
+      //debug process
+      console.log("Top of Stack: ", topOfStack);
+      console.log("Index: ", index);
+      //debug process
       if (topOfStack.type === "terminal") {
         if (topOfStack.value === currentToken.value) index++;
         else
@@ -41,6 +45,11 @@ export class parser {
         rowIndex = topOfStack.value;
         columnIndex = currentToken.value;
         action = parseTable[rowIndex][columnIndex];
+        //debug process
+        console.log("Row Index of action: ", rowIndex);
+        console.log("Column Index of action: ", columnIndex);
+        console.log("Action: ", action);
+        //debug process
 
         if (action === "lambda") this.holderStack.pop();
         else if (action === null)
@@ -48,7 +57,10 @@ export class parser {
             `there is an error in row ${currentToken.rowNumber} and column ${currentToken.columnNumber}`
           );
         else {
-          rule = Grammer[action as number];
+          rule = Grammer[(action - 1) as number];
+          //debug process
+          console.log("Rule: ", rule);
+          //debug process
           rule.rightSide
             .slice()
             .reverse()
@@ -57,6 +69,9 @@ export class parser {
             });
         }
       }
+      console.log(
+        "-----------------------------------------------------------"
+      );
     }
   }
 }

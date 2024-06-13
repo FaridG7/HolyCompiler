@@ -97,7 +97,12 @@ export function TextInput({
           setTokentable(tokenTable);
           const parserInstance = new parser(tokenTable);
           try {
-            parserInstance.parse();
+            if (!tokenTable.some((token) => token.type === "invalid"))
+              parserInstance.parse();
+            else
+              throw new Error(
+                "Token Table should not contain invalid tokens to parse to begin"
+              );
           } catch (error) {
             setParseErrors([(error as Error).message]);
           }

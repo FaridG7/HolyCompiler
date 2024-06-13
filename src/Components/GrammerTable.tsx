@@ -6,8 +6,8 @@ export function GrammerTable(): JSX.Element {
   return (
     <>
       <List>
-        {Grammer.map((rule) => {
-          return <Rule rule={rule} />;
+        {Grammer.map((rule, index) => {
+          return <Rule rule={rule} key={index} />;
         })}
       </List>
     </>
