@@ -199,7 +199,7 @@ export class scanner {
   }
 
   private isLitteral(word: string): boolean {
-    const _listOflitterals: string[] = ['"', ";"];
+    const _listOflitterals: string[] = ["(", ")", ":", ",", ";"];
     if (_listOflitterals.includes(word)) {
       return true;
     }
