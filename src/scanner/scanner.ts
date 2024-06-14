@@ -30,22 +30,24 @@ export class scanner {
 
   makeTokenTable(): void {
     this.makeListOfListOfwords();
-    this.insertDelimiters();
+    // this.insertDelimiters();
     this.convertToTempTokens();
     this.convertToValidTokens();
   }
 
   makeListOfListOfwords() {
     const rows = this.inputText.split("\n");
-    this.listOfListOfwords = rows.map((element) => element.split(" "));
+    this.listOfListOfwords = rows.map((element) =>
+      element.split(" ").filter((elem) => elem)
+    );
   }
 
-  insertDelimiters() {
-    const newListOfListOfwords = this.listOfListOfwords.map((row) =>
-      [...row.map((element) => [element, " "]), row[row.length - 1]].push("\n")
-    );
-    return newListOfListOfwords;
-  }
+  // insertDelimiters() {
+  //   const newListOfListOfwords = this.listOfListOfwords.map((row) =>
+  //     [...row.map((element) => [element, " "]), row[row.length - 1]].push("\n")
+  //   );
+  //   return newListOfListOfwords;
+  // }
 
   convertToTempTokens() {
     this.tempTokenTable = this.listOfListOfwords.map((listOfwords) =>
@@ -60,9 +62,11 @@ export class scanner {
           return this.makeTempToken("number", word);
         } else if (this.isIdentifier(word)) {
           return this.makeTempToken("identifier", word);
-        } else if (this.isDelimiter(word)) {
-          return this.makeTempToken("identifier", word);
-        } else {
+        }
+        // else if (this.isDelimiter(word)) {
+        //   return this.makeTempToken("identifier", word);
+        // }
+        else {
           return this.makeTempToken("invalid", word);
         }
       })
@@ -181,11 +185,11 @@ export class scanner {
     }
     return false;
   }
-  private isDelimiter(word: string): boolean {
-    const _listOflitterals: string[] = ["\n", " "];
-    if (_listOflitterals.includes(word)) {
-      return true;
-    }
-    return false;
-  }
+  // private isDelimiter(word: string): boolean {
+  //   const _listOflitterals: string[] = ["\n", " "];
+  //   if (_listOflitterals.includes(word)) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 }
