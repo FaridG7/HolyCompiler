@@ -13,8 +13,25 @@ import { tokenTable } from "../assets/types/tokenTable_types";
 type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Custom";
 
 const examples = {
-  "Ex 1": "Example 1",
-  "Ex 2": "Example 2",
+  "Ex 1":
+`program miow ;
+var a , b : integer
+begin
+a = 22 + 4 ;
+b = a + 23  ;
+show b ;
+end`,
+
+
+
+
+  "Ex 2": `program miow;
+var a, b, c, d, e : integer
+begin
+a = 22 + a4;
+b = a + 23;
+show(b);
+end`,
   "Ex 3": "Example 3",
   Custom: "",
 };
