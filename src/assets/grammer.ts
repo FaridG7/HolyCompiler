@@ -50,7 +50,6 @@ export const BNFGrammer: grammer = [
       { value: "<dec>", type: "variable" },
       { value: ":", type: "terminal" },
       { value: "<type>", type: "variable" },
-      { value: ";", type: "terminal" },
     ],
   },
   {

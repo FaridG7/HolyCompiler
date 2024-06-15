@@ -11,10 +11,10 @@ import { useState } from "react";
 import { tokenTable } from "../assets/types/tokenTable_types";
 import { errors } from "../assets/types/error_types";
 
-type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Ex 4" | "Ex 5" | "Custom";
+type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Ex 4" | "Ex 5" | "Ex 6" | "Custom";
 
 const examples = {
-  //Ex #1 => should contain invalid tokens
+  //Ex #1 => fail scanner, fail parsing, fail panic mode parsing
   "Ex 1": `program meow ;
 var a , b : integer7
 begin
@@ -23,44 +23,56 @@ b = a + 23a  ;
 show b12 ;
 end
 abc`,
-  "Ex 2": `program abc ;
-var a , b , c , d , e : integer
+  //Ex #2 => fail scanner, fail parsing, fail panic mode parsing
+  "Ex 2": `program abc;
+variable a , b7 , c 4, d , e2g : integer 
+beginend
+a = 2asd 2 + 4ss ;
+b = a + 23 ;
+show (e );gg
+end`,
+  //Ex #3 => pass scanner, pass parsing, pass panic mode parsing
+  "Ex 3": `program dada ;
+var a , b : integer
 begin
 a = 22 + 4 ;
 b = a + 23 ;
-show ( e ) ;
-end`,
-
-  "Ex 3": `pogram dada ;
-var a , b : integer
-begin
-a = 22 + 0 ;
-b = a + 23;
-var c : integer
 c = a + b ;
 show ( c ) ; 
 end`,
+  //Ex #4 => pass scanner, fail parsing, pass panic mode parsing
   "Ex 4": `program dada ;
-var a , b , e , d : integer
-begin
-a = 22 + 0 ;
-b = a + c + 1 ;
-d = b * 18 * e ;
-e = 1 ;
+var a , b : integer
+begin program
+a = 22 + 4 ;
+b = a + 23 ;
 var c : integer
 c = a + b ;
 show ( c ) ; 
 end`,
-  "Ex 5": `program miow ;
+  //Ex #5 => fail scanner, fail parsing, fail panic mode parsing
+  "Ex 5": `program abcde ;
 var a , b , e , d : integer
 begin
 a = 22 + 0 ;
 b = a + 1 ;
-d = b * 18 * e ;
+d = b + * 18 * e ;
 e = 1 ;
 var c : integer
 c = d / 12 ;
-show ( c ) ; 
+show ( c c ) ; 
+end end`,
+  //Ex #6 => pass scanner, fail parsing, pass panic mode parsing
+  "Ex 6": `program bad ;
+var a , b , e , d : integer
+begin
+a = 22 + 40 : ;
+b : ab = a + c + 1 ; aa
+d = b * 18 * e ;
+e = 1 ;
+var c : integer
+c = a + b ;
+show ( c ) ; de
 end`,
   Custom: "",
 };
@@ -122,6 +134,9 @@ export function TextInput({
         <ToggleButton value="Ex 5" aria-label="right aligned" color="secondary">
           Ex #5
         </ToggleButton>
+        <ToggleButton value="Ex 6" aria-label="right aligned" color="secondary">
+          Ex #6
+        </ToggleButton>
         <ToggleButton
           value="Custom"
           aria-label="right aligned"
@@ -157,6 +172,7 @@ export function TextInput({
         variant="contained"
         color="secondary"
         onClick={() => {
+          setParseErrors(null);
           if (tokenTable) {
             const parserInstance = new parser(tokenTable);
             if (!tokenTable.some((token) => token.type === "invalid")) {
@@ -184,9 +200,10 @@ export function TextInput({
         color="secondary"
         onClick={() => {
           if (tokenTable) {
+            setParseErrors(null);
             const parserInstance = new parser(tokenTable);
             if (!tokenTable.some((token) => token.type === "invalid")) {
-              parserInstance.parse();
+              parserInstance.panicModeParse();
               setParseErrors(parserInstance.errors);
             } else
               setParseErrors([

@@ -90,6 +90,15 @@ export class parser {
         "-----------------------------------------------------------"
       );
     }
+    if (index < this.tokenTable.length - 1) {
+      this.errors.push({
+        row: currentToken.rowNumber,
+        column: currentToken.columnNumber,
+        message: "token is not expected",
+        severity: "critical",
+      });
+      return;
+    }
   }
   panicModeParse() {
     this.holderStack.push(Grammer[0].variable);
@@ -104,10 +113,15 @@ export class parser {
       topOfStack = this.holderStack.pop();
       if (index < this.tokenTable?.length)
         currentToken = this.tokenTable[index];
-      else
-        throw new Error(
-          `expected a token at row ${currentToken?.rowNumber}, column ${currentToken?.columnNumber}`
-        );
+      else {
+        this.errors.push({
+          row: currentToken.rowNumber,
+          column: currentToken.columnNumber,
+          message: "expected a token",
+          severity: "critical",
+        });
+        return;
+      }
 
       //debug process
       console.log("Top of Stack: ", topOfStack);
@@ -140,6 +154,7 @@ export class parser {
             message: "mismatch token",
             severity: "warning",
           });
+          this.holderStack.push(topOfStack);
           index++;
         } else if (action === "S") {
           if (this.holderStack.isEmpty()) {
@@ -155,7 +170,7 @@ export class parser {
               row: currentToken.rowNumber,
               column: currentToken.columnNumber,
               message: "missing token",
-              severity:'warning'
+              severity: "warning",
             });
           }
         } else if (typeof action === "number") {
