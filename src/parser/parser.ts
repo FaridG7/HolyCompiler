@@ -1,24 +1,19 @@
 import { Grammer } from "../assets/grammer";
 import { block, parseTable, row } from "../assets/parseTable";
 import { element, stack } from "../assets/stack";
+import { errors } from "../assets/types/error_types";
 import { rule, variable } from "../assets/types/grammer_types";
 import { token, tokenTable } from "../assets/types/tokenTable_types";
-
-type panicModeWarning = {
-  rowNumber: number;
-  columnNumber: number;
-  message: "mismatch token" | "missing token";
-};
 
 export class parser {
   private tokenTable: tokenTable = [];
   private holderStack;
-  public panicModeWarnings: panicModeWarning[];
+  public errors: errors;
 
   constructor(tokenTable: tokenTable) {
     this.tokenTable = tokenTable;
     this.holderStack = new stack();
-    this.panicModeWarnings = [];
+    this.errors = [];
   }
   parse() {
     this.holderStack.push(Grammer[0].variable);
@@ -33,10 +28,15 @@ export class parser {
       topOfStack = this.holderStack.pop();
       if (index < this.tokenTable?.length)
         currentToken = this.tokenTable[index];
-      else
-        throw new Error(
-          `expected a token at row ${currentToken?.rowNumber}, column ${currentToken?.columnNumber}`
-        );
+      else {
+        this.errors.push({
+          row: currentToken.rowNumber,
+          column: currentToken.columnNumber,
+          message: "expected a token",
+          severity: "critical",
+        });
+        return;
+      }
 
       //debug process
       console.log("Top of Stack: ", topOfStack);
@@ -45,9 +45,13 @@ export class parser {
       if (topOfStack.type === "terminal") {
         if (topOfStack.value === currentToken.value) index++;
         else {
-          throw Error(
-            `The row ${currentToken.rowNumber} column ${currentToken.columnNumber} token is not expected`
-          );
+          this.errors.push({
+            row: currentToken.rowNumber,
+            column: currentToken.columnNumber,
+            message: "token is not expected",
+            severity: "critical",
+          });
+          return;
         }
       } else {
         rowIndex = topOfStack.value;
@@ -60,9 +64,13 @@ export class parser {
         //debug process
 
         if (action === null) {
-          throw Error(
-            `An Error occurred in row ${currentToken.rowNumber} column ${currentToken.columnNumber}`
-          );
+          this.errors.push({
+            row: currentToken.rowNumber,
+            column: currentToken.columnNumber,
+            message: "An error occurred ",
+            severity: "critical",
+          });
+          return;
         } else if (typeof action === "number") {
           rule = Grammer[(action - 1) as number];
           //debug process
@@ -108,10 +116,11 @@ export class parser {
       if (topOfStack.type === "terminal") {
         if (topOfStack.value === currentToken.value) index++;
         else {
-          this.panicModeWarnings.push({
-            rowNumber: currentToken.rowNumber,
-            columnNumber: currentToken.columnNumber,
+          this.errors.push({
+            row: currentToken.rowNumber,
+            column: currentToken.columnNumber,
             message: "mismatch token",
+            severity: "warning",
           });
         }
       } else {
@@ -125,22 +134,28 @@ export class parser {
         //debug process
 
         if (action === null) {
-          this.panicModeWarnings.push({
-            rowNumber: currentToken.rowNumber,
-            columnNumber: currentToken.columnNumber,
+          this.errors.push({
+            row: currentToken.rowNumber,
+            column: currentToken.columnNumber,
             message: "mismatch token",
+            severity: "warning",
           });
           index++;
         } else if (action === "S") {
-          if (this.holderStack.isEmpty())
-            throw Error(
-              `An Error occurred in row ${currentToken.rowNumber} column ${currentToken.columnNumber}`
-            );
-          else {
-            this.panicModeWarnings.push({
-              rowNumber: currentToken.rowNumber,
-              columnNumber: currentToken.columnNumber,
+          if (this.holderStack.isEmpty()) {
+            this.errors.push({
+              row: currentToken.rowNumber,
+              column: currentToken.columnNumber,
+              message: "An Error occurred",
+              severity: "critical",
+            });
+            return;
+          } else {
+            this.errors.push({
+              row: currentToken.rowNumber,
+              column: currentToken.columnNumber,
               message: "missing token",
+              severity:'warning'
             });
           }
         } else if (typeof action === "number") {

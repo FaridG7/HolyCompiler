@@ -14,7 +14,8 @@ import { TokenTable } from "./Components/TokenTable";
 import { TextInput } from "./Components/TextInput";
 import { tokenTable } from "./assets/types/tokenTable_types";
 import { useState } from "react";
-import { Errors, errorObj } from "./Components/Errors";
+import { Errors } from "./Components/Errors";
+import { errors } from "./assets/types/error_types";
 
 const theme = createTheme({
   palette: {
@@ -31,7 +32,7 @@ const theme = createTheme({
 });
 function App() {
   const [tokenTable, setTokentable] = useState<null | tokenTable>(null);
-  const [parseErrors, setParseErrors] = useState<null | errorObj[]>(null);
+  const [parseErrors, setParseErrors] = useState<null | errors>(null);
 
   return (
     <ThemeProvider theme={theme}>

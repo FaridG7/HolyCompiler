@@ -9,7 +9,7 @@ import { scanner } from "../scanner/scanner";
 import { parser } from "../parser/parser";
 import { useState } from "react";
 import { tokenTable } from "../assets/types/tokenTable_types";
-import { errorObj } from "./Errors";
+import { errors } from "../assets/types/error_types";
 
 type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Ex 4" | "Ex 5" | "Custom";
 
@@ -71,7 +71,7 @@ export function TextInput({
   tokenTable,
 }: {
   setTokentable: React.Dispatch<React.SetStateAction<tokenTable | null>>;
-  setParseErrors: React.Dispatch<React.SetStateAction<errorObj[] | null>>;
+  setParseErrors: React.Dispatch<React.SetStateAction<errors | null>>;
   tokenTable: tokenTable | null;
 }) {
   const [selection, setSelection] = useState<selection>("Ex 1");
@@ -159,23 +159,19 @@ export function TextInput({
         onClick={() => {
           if (tokenTable) {
             const parserInstance = new parser(tokenTable);
-            try {
-              if (!tokenTable.some((token) => token.type === "invalid"))
-                parserInstance.parse();
-              else
-                throw new Error(
-                  "Token Table should not contain invalid tokens to to begin Parsing"
-                );
-            } catch (error) {
+            if (!tokenTable.some((token) => token.type === "invalid")) {
+              parserInstance.parse();
+              setParseErrors(parserInstance.errors);
+            } else
               setParseErrors([
                 {
-                  message: (error as Error).message,
+                  message:
+                    "Token Table should not contain invalid tokens to to begin Parsing",
                   severity: "critical",
-                  rowNumber: 0,
-                  columnNumber: 0,
+                  row: 0,
+                  column: 0,
                 },
               ]);
-            }
           } else {
             alert("You have to generate the token table first!");
           }
@@ -189,36 +185,19 @@ export function TextInput({
         onClick={() => {
           if (tokenTable) {
             const parserInstance = new parser(tokenTable);
-            let tempError: null | errorObj = null;
-            try {
-              if (!tokenTable.some((token) => token.type === "invalid"))
-                parserInstance.panicModeParse();
-              else
-                throw new Error(
-                  "Token Table should not contain invalid tokens to begin Parsing"
-                );
-            } catch (error) {
-              tempError = {
-                message: (error as Error).message,
-                severity: "critical",
-                rowNumber: 0,
-                columnNumber: 0,
-              };
-            }
-            const errors: errorObj[] = parserInstance.panicModeWarnings.map(
-              (errorMessage) => {
-                return {
-                  message: errorMessage.message,
-                  severity: "warning",
-                  rowNumber: errorMessage.rowNumber,
-                  columnNumber: errorMessage.columnNumber,
-                };
-              }
-            );
-            if (tempError) {
-              errors.push(tempError);
-            }
-            setParseErrors(errors);
+            if (!tokenTable.some((token) => token.type === "invalid")) {
+              parserInstance.parse();
+              setParseErrors(parserInstance.errors);
+            } else
+              setParseErrors([
+                {
+                  message:
+                    "Token Table should not contain invalid tokens to to begin Parsing",
+                  severity: "critical",
+                  row: 0,
+                  column: 0,
+                },
+              ]);
           } else {
             alert("You have to generate the token table first!");
           }
