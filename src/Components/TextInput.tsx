@@ -13,9 +13,53 @@ import { tokenTable } from "../assets/types/tokenTable_types";
 type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Custom";
 
 const examples = {
-  "Ex 1": "Example 1",
-  "Ex 2": "Example 2",
-  "Ex 3": "Example 3",
+  "Ex 1":
+`program miow ;
+var a , b : integer
+begin
+a = 22 + 4 ;
+b = a + 23  ;
+show b ;
+end`,
+  "Ex 2": `program miow;
+var a, b, c, d, e : integer
+begin
+a = 22 + 0a4;
+b = a + 23;
+show(e);
+end`,
+
+  "Ex 3": `pogram miow ;
+var a , b : integer
+begin
+a = 22 + 0 ;
+b = a + 23;
+var c : integer
+c = a + b ;
+show ( c ) ; 
+end`,  
+"Ex 4": `program miow ;
+var a , b , e , d : integer
+begin
+a = 22 + 0 ;
+b = a + c + 1 ;
+d = b * 18 * e ;
+e = 1 ;
+var c : integer
+c = a + b ;
+show ( c ) ; 
+end`,
+"Ex 5": `program miow ;
+var a , b , e , d : integer
+begin
+a = 22 + 0 ;
+b = a + 1 ;
+d = b * 18 * e ;
+e = 1 ;
+var c : integer
+c = d / 12 ;
+show ( c ) ; 
+end`,
   Custom: "",
 };
 

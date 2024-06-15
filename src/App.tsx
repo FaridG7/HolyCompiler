@@ -29,8 +29,9 @@ const theme = createTheme({
     },
   },
 });
-
+const to = "fsdujso weofjsj wf   fweiofj fwi9";
 function App() {
+  console.log(to.split(" "));
   const [tokenTable, setTokentable] = useState<null | tokenTable>(null);
   const [parseErrors, setParseErrors] = useState<null | string[]>(null);
 

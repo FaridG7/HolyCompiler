@@ -42,12 +42,12 @@ export class scanner {
     );
   }
 
-  // insertDelimiters() {
-  //   const newListOfListOfwords = this.listOfListOfwords.map((row) =>
-  //     [...row.map((element) => [element, " "]), row[row.length - 1]].push("\n")
-  //   );
-  //   return newListOfListOfwords;
-  // }
+  insertDelimiters() {
+    const newListOfListOfwords = this.listOfListOfwords.map((row) =>
+      [...row.map((element) => [element, " "]), row[row.length - 1]].push("\n")
+    );
+    return newListOfListOfwords;
+  }
 
   convertToTempTokens() {
     this.tempTokenTable = this.listOfListOfwords.map((listOfwords) =>
