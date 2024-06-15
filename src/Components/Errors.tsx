@@ -1,11 +1,23 @@
 import { List, ListItem, ListItemText } from "@mui/material";
 
-export function Errors({ errors }: { errors: string[] }) {
+export type errorObj = {
+  message: string;
+  severity: "warning" | "critical";
+  rowNumber: number;
+  columnNumber: number;
+};
+
+export function Errors({ errors }: { errors: errorObj[] }) {
   return (
     <List>
-      {errors.map((error, index) => (
-        <ListItem key={index}>
-          <ListItemText>{error}</ListItemText>
+      {errors.map((errorObj, index) => (
+        <ListItem
+          key={index}
+          sx={{
+            bgcolor: errorObj.severity === "warning" ? "#ffcc00" : "#ff1a1a",
+          }}
+        >
+          <ListItemText>{errorObj.message}</ListItemText>
         </ListItem>
       ))}
     </List>
