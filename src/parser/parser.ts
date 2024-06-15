@@ -20,8 +20,8 @@ export class parser {
     this.holderStack = new stack();
     this.panicModeWarnings = [];
   }
-
-  parse() {
+  parse() {}
+  panicModeParse() {
     this.holderStack.push(Grammer[0].variable);
     let index: number = 0;
     let currentToken: token = (this.tokenTable as tokenTable)[index];

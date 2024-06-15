@@ -65,6 +65,7 @@ function App() {
             <TextInput
               setTokentable={setTokentable}
               setParseErrors={setParseErrors}
+              tokenTable={tokenTable}
             />
           </Stack>
           <Stack direction="column">

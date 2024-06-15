@@ -10,26 +10,27 @@ import { parser } from "../parser/parser";
 import { useState } from "react";
 import { tokenTable } from "../assets/types/tokenTable_types";
 
-type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Custom";
+type selection = "Ex 1" | "Ex 2" | "Ex 3" | "Ex 4" | "Ex 5" | "Custom";
 
 const examples = {
-  "Ex 1":
-`program miow ;
-var a , b : integer
+  //Ex #1 => should contain invalid tokens
+  "Ex 1": `program meow ;
+var a , b : integer7
 begin
 a = 22 + 4 ;
-b = a + 23  ;
-show b ;
-end`,
-  "Ex 2": `program miow;
-var a, b, c, d, e : integer
+b = a + 23a  ;
+show b12 ;
+end
+abc`,
+  "Ex 2": `program abc ;
+var a , b , c , d , e : integer
 begin
-a = 22 + 0a4;
-b = a + 23;
-show(e);
+a = 22 + 4 ;
+b = a + 23 ;
+show ( e ) ;
 end`,
 
-  "Ex 3": `pogram miow ;
+  "Ex 3": `pogram dada ;
 var a , b : integer
 begin
 a = 22 + 0 ;
@@ -37,8 +38,8 @@ b = a + 23;
 var c : integer
 c = a + b ;
 show ( c ) ; 
-end`,  
-"Ex 4": `program miow ;
+end`,
+  "Ex 4": `program dada ;
 var a , b , e , d : integer
 begin
 a = 22 + 0 ;
@@ -49,7 +50,7 @@ var c : integer
 c = a + b ;
 show ( c ) ; 
 end`,
-"Ex 5": `program miow ;
+  "Ex 5": `program miow ;
 var a , b , e , d : integer
 begin
 a = 22 + 0 ;
@@ -66,9 +67,11 @@ end`,
 export function TextInput({
   setTokentable,
   setParseErrors,
+  tokenTable,
 }: {
   setTokentable: React.Dispatch<React.SetStateAction<tokenTable | null>>;
   setParseErrors: React.Dispatch<React.SetStateAction<string[] | null>>;
+  tokenTable: tokenTable | null;
 }) {
   const [selection, setSelection] = useState<selection>("Ex 1");
   const [text, setText] = useState<string>(examples[selection]);
@@ -104,13 +107,19 @@ export function TextInput({
         }}
       >
         <ToggleButton value="Ex 1" aria-label="left aligned" color="secondary">
-          Ex 1
+          Ex #1
         </ToggleButton>
         <ToggleButton value="Ex 2" aria-label="centered" color="secondary">
-          Ex 2
+          Ex #2
         </ToggleButton>
         <ToggleButton value="Ex 3" aria-label="right aligned" color="secondary">
-          Ex 3
+          Ex #3
+        </ToggleButton>
+        <ToggleButton value="Ex 4" aria-label="right aligned" color="secondary">
+          Ex #4
+        </ToggleButton>
+        <ToggleButton value="Ex 5" aria-label="right aligned" color="secondary">
+          Ex #5
         </ToggleButton>
         <ToggleButton
           value="Custom"
@@ -139,20 +148,51 @@ export function TextInput({
           const scannerInstance = new scanner(text);
           const tokenTable = scannerInstance.getTokenTable();
           setTokentable(tokenTable);
-          const parserInstance = new parser(tokenTable);
-          try {
-            if (!tokenTable.some((token) => token.type === "invalid"))
-              parserInstance.parse();
-            else
-              throw new Error(
-                "Token Table should not contain invalid tokens to parse to begin"
-              );
-          } catch (error) {
-            setParseErrors([(error as Error).message]);
+        }}
+      >
+        Generate Token Table
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => {
+          if (tokenTable) {
+            const parserInstance = new parser(tokenTable);
+            try {
+              if (!tokenTable.some((token) => token.type === "invalid"))
+                parserInstance.parse();
+              else
+                throw new Error(
+                  "Token Table should not contain invalid tokens to parse to begin"
+                );
+            } catch (error) {
+              setParseErrors([(error as Error).message]);
+            }
           }
         }}
       >
-        Check for Errors
+        Check for Parse Errors
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => {
+          if (tokenTable) {
+            const parserInstance = new parser(tokenTable);
+            try {
+              if (!tokenTable.some((token) => token.type === "invalid"))
+                parserInstance.panicModeParse();
+              else
+                throw new Error(
+                  "Token Table should not contain invalid tokens to parse to begin"
+                );
+            } catch (error) {
+              setParseErrors([(error as Error).message]);
+            }
+          }
+        }}
+      >
+        Check for Parse Errors with Panic Mode
       </Button>
     </Stack>
   );
