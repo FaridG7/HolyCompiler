@@ -1,16 +1,24 @@
 import { Grammer } from "../assets/grammer";
-import { parseTable, row } from "../assets/parseTable";
+import { block, parseTable, row } from "../assets/parseTable";
 import { element, stack } from "../assets/stack";
 import { rule, variable } from "../assets/types/grammer_types";
 import { token, tokenTable } from "../assets/types/tokenTable_types";
 
+type panicModeWarning = {
+  rowNumber: number;
+  columnNumber: number;
+  type: "mismatch token" | "missing token";
+};
+
 export class parser {
   private tokenTable: tokenTable = [];
   private holderStack;
+  public panicModeWarnings: panicModeWarning[];
 
   constructor(tokenTable: tokenTable) {
     this.tokenTable = tokenTable;
     this.holderStack = new stack();
+    this.panicModeWarnings = [];
   }
 
   parse() {
@@ -18,14 +26,14 @@ export class parser {
     let index: number = 0;
     let currentToken: token = (this.tokenTable as tokenTable)[index];
     let topOfStack: element;
-    let action: number | "lambda" | null;
+    let action: block;
     let rowIndex: variable;
     let columnIndex: keyof row;
     let rule: rule;
     while (!this.holderStack.isEmpty()) {
       topOfStack = this.holderStack.pop();
       if (index < this.tokenTable?.length)
-        currentToken = (this.tokenTable as tokenTable)[index];
+        currentToken = this.tokenTable[index];
       else
         throw new Error(
           `expected a token at row ${currentToken?.rowNumber}, column ${currentToken?.columnNumber}`
@@ -37,10 +45,13 @@ export class parser {
       //debug process
       if (topOfStack.type === "terminal") {
         if (topOfStack.value === currentToken.value) index++;
-        else
-          throw Error(
-            `The row ${currentToken.rowNumber} column ${currentToken.columnNumber} terminal is not expected!!`
-          );
+        else {
+          this.panicModeWarnings.push({
+            rowNumber: currentToken.rowNumber,
+            columnNumber: currentToken.columnNumber,
+            type: "mismatch token",
+          });
+        }
       } else {
         rowIndex = topOfStack.value;
         columnIndex = currentToken.value;
@@ -51,12 +62,26 @@ export class parser {
         console.log("Action: ", action);
         //debug process
 
-        if (action === "lambda") this.holderStack.pop();
-        else if (action === null)
-          throw new Error(
-            `there is an error in row ${currentToken.rowNumber} and column ${currentToken.columnNumber}`
-          );
-        else {
+        if (action === null) {
+          this.panicModeWarnings.push({
+            rowNumber: currentToken.rowNumber,
+            columnNumber: currentToken.columnNumber,
+            type: "mismatch token",
+          });
+          index++;
+        } else if (action === "S") {
+          if (this.holderStack.isEmpty())
+            throw Error(
+              `An Error occurred in row ${currentToken.rowNumber} column ${currentToken.columnNumber}`
+            );
+          else {
+            this.panicModeWarnings.push({
+              rowNumber: currentToken.rowNumber,
+              columnNumber: currentToken.columnNumber,
+              type: "missing token",
+            });
+          }
+        } else if (typeof action === "number") {
           rule = Grammer[(action - 1) as number];
           //debug process
           console.log("Rule: ", rule);
@@ -67,6 +92,8 @@ export class parser {
             .forEach((element) => {
               if (element.value != "lambda") this.holderStack.push(element);
             });
+        } else if (action === "lambda") {
+          //do nothing
         }
       }
       console.log(

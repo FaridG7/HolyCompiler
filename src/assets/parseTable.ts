@@ -1,4 +1,4 @@
-type block = null | number | "lambda";
+export type block = null | number | "lambda" | "S";
 
 export type row = {
   program: block;

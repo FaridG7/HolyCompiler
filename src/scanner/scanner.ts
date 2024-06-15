@@ -74,7 +74,7 @@ export class scanner {
   }
 
   convertToValidTokens() {
-    const validTokenTypes = ["keyWord", "operator", "delimiter"];
+    const validTokenTypes = ["keyWord", "operator", "delimiter", "invalid"];
     const tempTokenTableHolder1 = this.tempTokenTable.map((array) => {
       return array.map((tempToken) => {
         if (validTokenTypes.includes(tempToken.type)) {
