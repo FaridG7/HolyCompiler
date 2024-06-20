@@ -30,7 +30,6 @@ export class scanner {
 
   makeTokenTable(): void {
     this.makeListOfListOfwords();
-    // this.insertDelimiters();
     this.convertToTempTokens();
     this.convertToValidTokens();
   }
@@ -42,12 +41,6 @@ export class scanner {
     );
   }
 
-  // insertDelimiters() {
-  //   const newListOfListOfwords = this.listOfListOfwords.map((row) =>
-  //     [...row.map((element) => [element, " "]), row[row.length - 1]].push("\n")
-  //   );
-  //   return newListOfListOfwords;
-  // }
 
   convertToTempTokens() {
     this.tempTokenTable = this.listOfListOfwords.map((listOfwords) =>
@@ -63,9 +56,6 @@ export class scanner {
         } else if (this.isIdentifier(word)) {
           return this.makeTempToken("identifier", word);
         }
-        // else if (this.isDelimiter(word)) {
-        //   return this.makeTempToken("identifier", word);
-        // }
         else {
           return this.makeTempToken("invalid", word);
         }
@@ -185,11 +175,4 @@ export class scanner {
     }
     return false;
   }
-  // private isDelimiter(word: string): boolean {
-  //   const _listOflitterals: string[] = ["\n", " "];
-  //   if (_listOflitterals.includes(word)) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 }

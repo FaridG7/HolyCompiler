@@ -37,7 +37,6 @@ export class parser {
         });
         return;
       }
-
       //debug process
       console.log("Top of Stack: ", topOfStack);
       console.log("Index: ", index);
@@ -63,7 +62,7 @@ export class parser {
         console.log("Action: ", action);
         //debug process
 
-        if (action === null) {
+        if (action === null ||action === "S") {
           this.errors.push({
             row: currentToken.rowNumber,
             column: currentToken.columnNumber,
